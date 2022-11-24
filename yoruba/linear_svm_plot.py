@@ -15,9 +15,9 @@ from sklearn import svm
 from sklearn.inspection import DecisionBoundaryDisplay
 
 
-from sklearn.pipeline import Pipeline
+#from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.svm import LinearSVC
+#from sklearn.svm import LinearSVC
 
 
 # we create 40 separable points
@@ -84,21 +84,17 @@ print(X)
 y = (df['label'] == 'positive').astype(np.float64)
 print(y.shape, X.shape)
 
-svm_clf = Pipeline([
-                ('scaler', StandardScaler()),
-                ('linear_svc', LinearSVC(C=1, loss='hinge'))
-])
+# svm_clf = Pipeline([
+#                 ('scaler', StandardScaler()),
+#                 ('linear_svc', LinearSVC(C=1, loss='hinge'))
+# ])
 
-svm_clf.fit(X, y)
+#svm_clf.fit(X, y)
 
 #fit the model, don't regularize for illustration purposes
-# clf = svm.SVC(kernel="linear", C=1000)
-# scaler = StandardScaler()
-# X = scaler.fit_transform(X)
-print(X)
-# clf.fit(X, y)
+clf = svm.SVC(kernel="linear", C=1000)
+clf.fit(X, y)
 
-#clf.fit(X, y)
 
 plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
 
