@@ -10,7 +10,7 @@ print(yourba_tweets.head())
 
 
 positive_sentiment = yourba_tweets[yourba_tweets['label'] == 'positive']
-#print(positive_sentiment)
+print(positive_sentiment)
 positive_sentiment = positive_sentiment.pop('tweet')
 #print(positive_sentiment)
 print(positive_sentiment.shape[0])
