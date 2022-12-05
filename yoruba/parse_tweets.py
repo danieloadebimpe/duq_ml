@@ -1,11 +1,11 @@
 import pandas as pd
 import tensorflow as tf
 from collections import Counter
+import re
 
 
 yourba_tweets = pd.read_csv('/Users/femiadebimpe/terminal-cpu/data/yo_train.tsv', sep='\t', header=0)
 print(yourba_tweets.head())
-
 
 
 
@@ -25,7 +25,7 @@ print(negative_sentiment.shape[0])
 ds_positive = tf.data.Dataset.from_tensor_slices(positive_sentiment)
 ds_negative = tf.data.Dataset.from_tensor_slices(negative_sentiment)
 
-
+print(ds_positive)
 def preprocess(words):
     words = tf.strings.regex_replace(words, b"<br\\s*/?>", b" ")
     words = tf.strings.regex_replace(words, b"[^a-zA-Z]", b" ")
@@ -33,12 +33,15 @@ def preprocess(words):
     words = tf.strings.split(words)
     return words
 
+
+
 postitive_tweets = list()
 negative_tweets = list()
 
 
 def get_letter_instances(reviews, ds):
     for element in ds.as_numpy_iterator():
+        print(element)
         reviews.append(preprocess(element))
 
     vocab = Counter()

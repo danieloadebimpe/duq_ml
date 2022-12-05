@@ -4,6 +4,7 @@ import pandas as pd
 
 # changed this to test set, but originally used the entire set to get analysis for classifier 
 imdb_data = pd.read_csv("~/terminal-cpu/data/imdb_1k_set.csv") 
+#yoruba_data = pd.read_csv("~/terminal-cpu/data/yo_train.tsv") 
                 
 #imdb_reviews = imdb_data.pop('review')
 
@@ -37,6 +38,7 @@ negative_reviews = list()
 
 def get_letter_instances(reviews, ds):
     for element in ds.as_numpy_iterator():
+        print(element)
         reviews.append(preprocess(element))
 
     vocab = Counter()

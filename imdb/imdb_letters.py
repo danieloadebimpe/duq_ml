@@ -10,7 +10,7 @@ import pandas as pd
 # Therefore, I used the % of h instances in positive reviews - 2.57% as the decision, or 
 # classification algorithm.
 
-imdb_data = pd.read_csv("~/terminal-cpu/data/imdb_1k_set.csv") 
+imdb_data = pd.read_csv("~/terminal-cpu/data/.csv") 
 
 reviews = imdb_data.pop('review')
 sentiment_scores = imdb_data.pop('sentiment')

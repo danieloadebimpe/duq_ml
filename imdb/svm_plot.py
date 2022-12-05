@@ -25,7 +25,7 @@ from sklearn.preprocessing import StandardScaler
 # print(X)
 
 
-df = pd.read_csv('/Users/femiadebimpe/terminal-cpu/data/yo_train.tsv', sep='\t', header=0) 
+df = pd.read_csv("~/terminal-cpu/data/imdb_1k_set.csv") 
 
 count = CountVectorizer()
 
@@ -36,7 +36,7 @@ def preprocessor(text):
             ' '.join(emoticons).replace('-', ''))
     return text
 
-tweets = df['tweet'].apply(preprocessor)
+tweets = df['review'].apply(preprocessor)
 
 feature_cols = []
 corpus = tweets.to_numpy()
@@ -46,7 +46,7 @@ vec_df = pd.DataFrame(count.vocabulary_, index=[0])
 #print(vec_df.head())
 
 vec_df = vec_df.sort_index(ascending=True, axis=1)
-#print(vec_df.head())
+print(vec_df.head())
 #print(vec_df.columns.tolist())
 
 
@@ -71,6 +71,7 @@ for tweet in tweet_fv:
     np.append(feature_vecs, fv, axis=None)
 
 feature_vecs = np.where(np.isfinite(feature_vecs), feature_vecs, 0)
+print(feature_vecs)
 
 #print(feature_vecs[:8522][:, (2,3,4,5)])
 
@@ -81,7 +82,7 @@ print(X)
 
 
 #X = iris['data'][:,(2,3)]
-y = (df['label'] == 'positive').astype(np.float64)
+y = (df['sentiment'] == 'positive').astype(np.float64)
 print(y.shape, X.shape)
 
 # svm_clf = Pipeline([
