@@ -1,4 +1,5 @@
 import pandas as pd, re
+from unidecode import unidecode
 import tensorflow as tf
 from keras.preprocessing import text, sequence 
 from keras import layers, models, optimizers
@@ -18,15 +19,25 @@ print(yoruba_tweets.head())
 tweets = yoruba_tweets.pop('tweet')
 labels = yoruba_tweets.pop('label')
 
-def preprocess(text):
-    text = re.sub('<[^>]*@>', '', text)
-    emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
-    text = (re.sub('[\W]+', ' ', text.lower()) +
-            ' '.join(emoticons).replace('-', ''))
-    return text
+# word = 'Ọ̀ọ̀ wo'
+# print(unidecode(word))
 
-tweets.apply(preprocess)
-print(tweets)
+def preprocess(tweet):
+    tweet = unidecode(tweet)
+    # patterns = [r'[@user]', r'[RT]', 
+    # r'[:]', r'[http//|https//]', r'[>>]', r'[#]']
+
+    # for pattern in patterns:
+    #     tweet = re.sub(pattern, '', tweet)
+        
+    #re.findall(r'#([a-z][A-Z])', tweet)
+    tweet = re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", '', tweet)
+
+    return tweet
+
+tweets = tweets.apply(preprocess)
+# for tweet in tweets:
+#     print(tweet)
 
 train_x, valid_x, train_y, valid_y = sklearn.model_selection.train_test_split(tweets, labels)
 encoder = preprocessing.LabelEncoder()
@@ -39,7 +50,7 @@ count_vect.fit(tweets)
 
 xtrain_count = count_vect.transform(train_x)
 xvalid_count = count_vect.transform(valid_x)
-
+#print(xtrain_count)
 
 # tf-idf vectors as features 
 tfidf_vect = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=5000)
@@ -48,12 +59,14 @@ tfidf_vect.fit(tweets)
 # word level tf-idf
 xtrain_tfidf = tfidf_vect.transform(train_x)
 xvalid_tfidf = tfidf_vect.transform(valid_x)
+#print('word', xtrain_tfidf)
 
 # ngram level tf-idf
 tfidf_vect_gram = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=5000)
 tfidf_vect_gram.fit(tweets)
 xtrain_tfidf_ngram = tfidf_vect_gram.transform(train_x)
 xvalid_tfidf_ngram = tfidf_vect_gram.transform(valid_x)
+#print('vect-gram', xtrain_tfidf_ngram)
 
 # characters level tf-idf
 tfidf_vect_ngram_chars = TfidfVectorizer(analyzer='char', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=5000)

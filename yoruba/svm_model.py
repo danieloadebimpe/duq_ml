@@ -7,7 +7,10 @@ import matplotlib.pyplot as plt
 from prepare import train_model, train_y
 from prepare import xtrain_count, xvalid_count
 
+from prepare import xtrain_tfidf, xvalid_tfidf
 from prepare import xtrain_tfidf_ngram, xvalid_tfidf_ngram
+from prepare import xtrain_tfidf_ngram_chars, xvalid_tfidf_ngram_chars
+
 import matplotlib.pyplot as plt
 
 from sklearn import svm
@@ -48,18 +51,27 @@ def plot_decision_regions(X, y, classifier, test_idx=None,
                     linewidth=1, marker='o',
                     s=100, label='test set')
 
-# svm_model = train_model(svm.SVC(), xtrain_tfidf_ngram, train_y, xvalid_tfidf_ngram)
-# print("svm n-gram vectors: ", svm_model)
+svm_model = train_model(svm.SVC(kernel='poly', degree=3, coef0=1, C=15), xtrain_count, train_y, xvalid_count)
+print("svm count vects: ", svm_model)
 
-svm = SVC(kernel='linear', C=1.0, random_state=1)
-svm.fit(xtrain_tfidf_ngram, train_y)
+svm_model = train_model(svm.SVC(kernel='poly', degree=3, coef0=1, C=15), xtrain_tfidf_ngram, train_y, xvalid_tfidf_ngram)
+print("svm n-gram vectors: ", svm_model)
 
-print(xtrain_tfidf_ngram)
+svm_model = train_model(svm.SVC(kernel='poly', degree=3, coef0=1, C=15), xtrain_tfidf, train_y, xvalid_tfidf)
+print("svm n-gram word: ", svm_model)
 
-plot_decision_regions(xtrain_tfidf_ngram, train_y, classifier=svm, test_idx=range(105, 150))
-plt.xlabel('x')
-plt.ylabel('y')
-plt.tight_layout()
-plt.show()
+svm_model = train_model(svm.SVC(kernel='poly', degree=3, coef0=1, C=15), xtrain_tfidf_ngram_chars, train_y, xvalid_tfidf_ngram_chars)
+print("svm n-gram char: ", svm_model)
+
+# svm = SVC(kernel='linear', C=1.0, random_state=1)
+# svm.fit(xtrain_tfidf_ngram, train_y)
+
+# print(xtrain_tfidf_ngram)
+
+# plot_decision_regions(xtrain_tfidf_ngram, train_y, classifier=svm, test_idx=range(105, 150))
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.tight_layout()
+# plt.show()
 
 
